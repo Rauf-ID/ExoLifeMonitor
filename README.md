@@ -1,4 +1,4 @@
-# ExoLifeMonitor
+# ExoLifeMonitor-Java
 
 
 ## License
