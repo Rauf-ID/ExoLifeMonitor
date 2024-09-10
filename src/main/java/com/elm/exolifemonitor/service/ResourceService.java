@@ -19,6 +19,7 @@
 
 package com.elm.exolifemonitor.service;
 
+import com.elm.exolifemonitor.model.Resources;
 import com.elm.exolifemonitor.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,7 @@ public class ResourceService {
         this.resourceRepository = resourceRepository;
     }
 
+    public void processResourceData(Resources resources) {
+
+    }
 }

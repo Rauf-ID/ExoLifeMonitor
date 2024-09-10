@@ -19,14 +19,32 @@
 
 package com.elm.exolifemonitor.kafka;
 
+import com.elm.exolifemonitor.model.Resources;
 import com.elm.exolifemonitor.service.ResourceService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResourceKafkaConsumer {
+    private static final Logger log = LogManager.getLogger(ResourceKafkaConsumer.class);
 
     @Autowired
     private ResourceService resourceService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @KafkaListener(topics = "resource-data-topic", groupId = "group_id")
+    public void consume(ConsumerRecord<String, String> record) {
+        try {
+            Resources resource = objectMapper.readValue(record.value(), Resources.class);
+            resourceService.processResourceData(resource);
+        } catch (Exception e) {
+            log.error("e: ", e);
+        }
+    }
 
 }
