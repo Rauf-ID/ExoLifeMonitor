@@ -17,32 +17,33 @@
  * Copyright (C) 2024 Rauf Agaguliev
  */
 
-package com.elm.exolifemonitor.service;
+package com.elm.exolifemonitor.mapper;
 
+import com.elm.exolifemonitor.dto.ResourcesDTO;
 import com.elm.exolifemonitor.model.Resources;
-import com.elm.exolifemonitor.repository.ResourceRepository;
+import com.elm.exolifemonitor.model.Station;
+import com.elm.exolifemonitor.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-@Service
-public class ResourceService {
+@Component
+public class ResourceMapper {
 
     @Autowired
-    private final ResourceRepository resourceRepository;
+    private StationRepository stationRepository;
 
-    public ResourceService(ResourceRepository resourceRepository) {
-        this.resourceRepository = resourceRepository;
+    public Resources toEntity(ResourcesDTO dto) {
+        Station station = stationRepository.findById(dto.getStation())
+                .orElseThrow(() -> new RuntimeException("Station not found"));
+
+        Resources resource = new Resources();
+        resource.setId(dto.getId());
+        resource.setType(dto.getType());
+        resource.setCurrentLevel(dto.getCurrentLevel());
+        resource.setCapacity(dto.getCapacity());
+        resource.setStation(station);
+
+        return resource;
     }
 
-    public void processResourceData(Resources resource) {
-//        resource.setReceivedAt(LocalDateTime.now());
-        resourceRepository.save(resource);
-    }
-
-    public void processBatchResourceData(List<Resources> resources) {
-//        resources.forEach(resource -> resource.setReceivedAt(LocalDateTime.now()));
-        resourceRepository.saveAll(resources);
-    }
 }
