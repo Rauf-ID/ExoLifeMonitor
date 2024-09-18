@@ -17,40 +17,31 @@
  * Copyright (C) 2024 Rauf Agaguliev
  */
 
-package com.elm.exolifemonitor.service;
+package com.elm.exolifemonitor.controller;
 
 import com.elm.exolifemonitor.model.Resources;
-import com.elm.exolifemonitor.repository.ResourceRepository;
+import com.elm.exolifemonitor.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@Service
-public class ResourceService {
+@RestController
+@RequestMapping("/api/resources")
+public class ResourceController {
 
     @Autowired
-    private final ResourceRepository resourceRepository;
+    private ResourceService resourceService;
 
-    public ResourceService(ResourceRepository resourceRepository) {
-        this.resourceRepository = resourceRepository;
-    }
-
-    public void processResourceData(Resources resource) {
-//        resource.setReceivedAt(LocalDateTime.now());
-        resourceRepository.save(resource);
-    }
-
-    public void processBatchResourceData(List<Resources> resources) {
-//        resources.forEach(resource -> resource.setReceivedAt(LocalDateTime.now()));
-        resourceRepository.saveAll(resources);
-    }
-
+    @GetMapping
     public Iterable<Resources> getAllResources() {
-        return resourceRepository.findAll();
+        return resourceService.getAllResources();
     }
 
-    public Iterable<Resources> getResourcesByStation(Long stationId) {
-        return resourceRepository.findByStationId(stationId);
+    @GetMapping("/station/{stationId}")
+    public Iterable<Resources> getResourcesByStation(@PathVariable Long stationId) {
+        return resourceService.getResourcesByStation(stationId);
     }
+
 }
