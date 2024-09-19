@@ -19,6 +19,8 @@
 
 package com.elm.exolifemonitor.controller;
 
+import com.elm.exolifemonitor.dto.ResourcesDTO;
+import com.elm.exolifemonitor.mapper.ResourceMapper;
 import com.elm.exolifemonitor.model.Resources;
 import com.elm.exolifemonitor.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceController {
@@ -34,9 +39,15 @@ public class ResourceController {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private ResourceMapper resourcesMapper;
+
     @GetMapping
-    public Iterable<Resources> getAllResources() {
-        return resourceService.getAllResources();
+    public List<ResourcesDTO> getAllResources() {
+        List<Resources> resources = resourceService.getAllResources();
+        return resources.stream()
+                .map(resourcesMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/station/{stationId}")

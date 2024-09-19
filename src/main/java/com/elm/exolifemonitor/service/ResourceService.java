@@ -46,7 +46,7 @@ public class ResourceService {
         resourceRepository.saveAll(resources);
     }
 
-    public Iterable<Resources> getAllResources() {
+    public List<Resources> getAllResources() {
         return resourceRepository.findAll();
     }
 

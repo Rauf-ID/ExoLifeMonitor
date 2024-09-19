@@ -19,13 +19,16 @@
 
 package com.elm.exolifemonitor.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ResourcesDTO {
     private Long id;
     private String type;
     private float currentLevel;
     private float capacity;
-    private Long station;
+    private Long stationId;
+
 }
