@@ -51,8 +51,11 @@ public class ResourceController {
     }
 
     @GetMapping("/station/{stationId}")
-    public Iterable<Resources> getResourcesByStation(@PathVariable Long stationId) {
-        return resourceService.getResourcesByStation(stationId);
+    public List<ResourcesDTO> getResourcesByStation(@PathVariable Long stationId) {
+        List<Resources> resources = resourceService.getResourcesByStation(stationId);
+        return resources.stream()
+                .map(resourcesMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 }

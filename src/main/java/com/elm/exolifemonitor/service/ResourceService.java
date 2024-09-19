@@ -50,7 +50,7 @@ public class ResourceService {
         return resourceRepository.findAll();
     }
 
-    public Iterable<Resources> getResourcesByStation(Long stationId) {
+    public List<Resources> getResourcesByStation(Long stationId) {
         return resourceRepository.findByStationId(stationId);
     }
 }
