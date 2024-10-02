@@ -45,4 +45,12 @@ public class ResourceService {
 //        resources.forEach(resource -> resource.setReceivedAt(LocalDateTime.now()));
         resourceRepository.saveAll(resources);
     }
+
+    public List<Resources> getAllResources() {
+        return resourceRepository.findAll();
+    }
+
+    public List<Resources> getResourcesByStation(Long stationId) {
+        return resourceRepository.findByStationId(stationId);
+    }
 }

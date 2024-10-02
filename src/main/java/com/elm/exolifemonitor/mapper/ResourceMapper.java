@@ -33,7 +33,7 @@ public class ResourceMapper {
     private StationRepository stationRepository;
 
     public Resources toEntity(ResourcesDTO dto) {
-        Station station = stationRepository.findById(dto.getStation())
+        Station station = stationRepository.findById(dto.getStationId())
                 .orElseThrow(() -> new RuntimeException("Station not found"));
 
         Resources resource = new Resources();
@@ -44,6 +44,16 @@ public class ResourceMapper {
         resource.setStation(station);
 
         return resource;
+    }
+
+    public ResourcesDTO toDTO(Resources resource) {
+        return new ResourcesDTO(
+                resource.getId(),
+                resource.getType(),
+                resource.getCurrentLevel(),
+                resource.getCapacity(),
+                resource.getStation().getId()
+        );
     }
 
 }
